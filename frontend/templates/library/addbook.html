@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style type="text/css">
+    .bs-example { margin: 0px; }
+    .navbar-brand { font-size: 20px; font-family: sans-serif; }
+  </style>
+  <style type="text/css">
+    body { color: #aa082e; background-color:#b6bde7; font-family: 'Roboto', sans-serif; }
+    .form-control { border-color: #eee; min-height: 41px; box-shadow: none !important; }
+    .form-control:focus { border-color: #5cd3b4; }
+    .form-control, .btn { border-radius: 3px; }
+    .signup-form { width: 500px; margin: 0 auto; padding: 30px 0; }
+    .signup-form h2 { color: #333; margin: 0 0 30px 0; display: inline-block; padding: 0 30px 10px 0; border-bottom: 3px solid #ffffff; }
+    .signup-form form { color: #999; border-radius: 3px; margin-bottom: 15px; background: #fff; box-shadow: 0px 2px 2px rgba(0,0,0,0.3); padding: 30px; }
+    .signup-form .form-group { margin-bottom: 20px; }
+    .signup-form label { font-weight: normal; font-size: 13px; }
+    .signup-form .btn { font-size: 16px; font-weight: bold; background: #161df0; border: none; margin-top: 20px; min-width: 140px; }
+    .signup-form .btn:hover, .signup-form .btn:focus { background: #41cba9; outline: none !important; }
+    .signup-form a { color: #2b04ff; text-decoration: underline; }
+    .signup-form a:hover { text-decoration: none; }
+    .signup-form form a { color: #5cd3b4; text-decoration: none; }
+    .signup-form form a:hover { text-decoration: underline; }
+  </style>
+  <title>Add Book - Library Management System</title>
+</head>
+<body style="background-color:#b6bde7;">
+<!-- Navbar (Admin) -->
+<div class="bs-example">
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+    <a href="/" class="navbar-brand">Library Management</a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+      <div class="navbar-nav">
+        <a href="/" class="nav-item nav-link active">Home</a>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Book</a>
+          <div class="dropdown-menu">
+            <a href="/addbook/" class="dropdown-item">Add Book</a>
+            <a href="/viewbook/" class="dropdown-item">View Book</a>
+          </div>
+        </div>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Issue Book</a>
+          <div class="dropdown-menu">
+            <a href="/issuebook/" class="dropdown-item">Issue New Book</a>
+            <a href="/viewissuedbook/" class="dropdown-item">View Issued Book</a>
+          </div>
+        </div>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Student</a>
+          <div class="dropdown-menu">
+            <a href="/viewstudent/" class="dropdown-item">View Student</a>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-nav">
+        <a href="#" class="nav-item nav-link" id="logoutBtn" onclick="logout()" style="cursor:pointer;">LOGOUT</a>
+        <a href="/aboutus/" class="nav-item nav-link">About Us</a>
+        <a href="/contactus/" class="nav-item nav-link">Contact Us</a>
+      </div>
+    </div>
+  </nav>
+</div>
+<br><br>
+<center><h3 style="margin-bottom:0px;" class="alert alert-success">ADD BOOK IN LIBRARY !</h3></center>
+<div class="signup-form">
+  <form id="addBookForm" class="form-horizontal">
+    <center><h2>ADD BOOK IN LIBRARY</h2></center>
+    <div class="form-group">
+      <label class="control-label col-xs-4">Book Name</label>
+      <div class="col-xs-8"><input type="text" name="name" class="form-control" maxlength="30" required></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-xs-4">ISBN</label>
+      <div class="col-xs-8"><input type="number" name="isbn" class="form-control" required></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-xs-4">Author</label>
+      <div class="col-xs-8"><input type="text" name="author" class="form-control" maxlength="40" required></div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-xs-4">Category</label>
+      <div class="col-xs-8">
+        <select name="category" class="form-control" required>
+          <option value="education">Education</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="comics">Comics</option>
+          <option value="biography">Biography</option>
+          <option value="history">History</option>
+        </select>
+      </div>
+    </div>
+    <div id="bookError" class="alert alert-danger" style="display:none;"></div>
+    <div class="form-group">
+      <div class="col-xs-8 col-xs-offset-4">
+        <button type="submit" class="btn btn-primary btn-lg">ADD</button>
+      </div>
+    </div>
+  </form>
+  <div class="text-center">View Available Book In Library <a href="/viewbook/">Click here</a></div>
+</div>
+<!-- Footer -->
+<footer style="padding:0;background-color:black;margin:0;">
+  <p style="text-align:center;">
+    <a href="https://facebook.com/sumit.luv/" class="fa fa-facebook" style="background:#3B5998;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;margin-top:30px;"></a>
+    <a href="https://api.whatsapp.com/send?phone=919572181024" class="fa fa-whatsapp" style="background:#25d366;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+    <a href="https://instagram.com/sumit.luv" class="fa fa-instagram" style="background:#125688;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+    <a href="https://twitter.com/sumitkumar1503" class="fa fa-twitter" style="background:#55ACEE;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+  </p><br>
+  <div class="container"><div class="row"><div class="col-md-12 col-sm-12">
+    <div style="color:#ffffff;text-align:center;"><p>Made in India <br>Copyright &copy; 2020 LazyCoder</p></div>
+  </div></div></div>
+</footer>
+<script>
+function logout() {
+  fetch('/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+    .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
+    .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
+}
+function getCookie(name) {
+  let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  return v ? v[2] : null;
+}
+</script>
+<script>
+document.getElementById('addBookForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = new URLSearchParams(new FormData(e.target));
+  data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+  fetch('/addbook/', {method:'POST', body:data, credentials:'include'})
+  .then(r => {
+    if(r.ok || r.redirected) window.location.href = '/bookadded/';
+    else {
+      document.getElementById('bookError').textContent = 'Failed to add book. Please try again.';
+      document.getElementById('bookError').style.display = 'block';
+    }
+  })
+  .catch(() => {
+    document.getElementById('bookError').textContent = 'Network error. Please try again.';
+    document.getElementById('bookError').style.display = 'block';
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style type="text/css">
+    .bs-example { margin: 0px; }
+    .navbar-brand { font-size: 20px; font-family: sans-serif; }
+  </style>
+  <title>Admin Dashboard - Library Management System</title>
+  <style media="screen">
+    .jumbotron { margin-top:0px; margin-bottom:0px; }
+    .jumbotron h1 { text-align:center; }
+  </style>
+</head>
+<body>
+<!-- Navbar (Admin) -->
+<div class="bs-example">
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+    <a href="/" class="navbar-brand">Library Management</a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+      <div class="navbar-nav">
+        <a href="/" class="nav-item nav-link active">Home</a>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Book</a>
+          <div class="dropdown-menu">
+            <a href="/addbook/" class="dropdown-item">Add Book</a>
+            <a href="/viewbook/" class="dropdown-item">View Book</a>
+          </div>
+        </div>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Issue Book</a>
+          <div class="dropdown-menu">
+            <a href="/issuebook/" class="dropdown-item">Issue New Book</a>
+            <a href="/viewissuedbook/" class="dropdown-item">View Issued Book</a>
+          </div>
+        </div>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Student</a>
+          <div class="dropdown-menu">
+            <a href="/viewstudent/" class="dropdown-item">View Student</a>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-nav">
+        <a href="#" class="nav-item nav-link" id="logoutBtn" onclick="logout()" style="cursor:pointer;">LOGOUT</a>
+        <a href="/aboutus/" class="nav-item nav-link">About Us</a>
+        <a href="/contactus/" class="nav-item nav-link">Contact Us</a>
+      </div>
+    </div>
+  </nav>
+</div>
+<br><br>
+<center><h3 style="margin-bottom:0px;" class="alert alert-success">Welcome to Online library !</h3></center>
+<div class="jumbotron" style="margin-bottom:0px;">
+  <h1 class="display-4">Hello, Admin!</h1>
+  <p class="lead">As you are Admin, you can add a book to library, view available book in library,
+    Issue books to students, View issued book to students and many more ... !</p>
+  <hr class="my-4">
+  <p>Option Available For You</p>
+  <div class="options" style="text-align:center">
+    <a href="/addbook/" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Add Book To Library</a><br><br>
+    <a href="/viewbook/" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">View Available Book</a><br><br>
+    <a href="/issuebook/" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Issue New Book</a><br><br>
+    <a href="/viewissuedbook/" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">View Issued Book</a><br><br>
+    <a href="/viewstudent/" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">View Student</a>
+  </div>
+</div>
+<!-- Footer -->
+<footer style="padding:0;background-color:black;margin:0;">
+  <p style="text-align:center;">
+    <a href="https://facebook.com/sumit.luv/" class="fa fa-facebook" style="background:#3B5998;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;margin-top:30px;"></a>
+    <a href="https://api.whatsapp.com/send?phone=919572181024" class="fa fa-whatsapp" style="background:#25d366;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+    <a href="https://instagram.com/sumit.luv" class="fa fa-instagram" style="background:#125688;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+    <a href="https://twitter.com/sumitkumar1503" class="fa fa-twitter" style="background:#55ACEE;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+  </p><br>
+  <div class="container"><div class="row"><div class="col-md-12 col-sm-12">
+    <div style="color:#ffffff;text-align:center;"><p>Made in India <br>Copyright &copy; 2020 LazyCoder</p></div>
+  </div></div></div>
+</footer>
+<script>
+function logout() {
+  fetch('/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+    .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
+    .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
+}
+function getCookie(name) {
+  let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  return v ? v[2] : null;
+}
+</script>
+</body>
+</html>

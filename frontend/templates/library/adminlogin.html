@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style type="text/css">
+    .bs-example { margin: 0px; }
+    .navbar-brand { font-size: 20px; font-family: sans-serif; }
+  </style>
+  <style type="text/css">
+    body { color: #aa082e; background-color:#b6bde7; font-family: 'Roboto', sans-serif; }
+    .form-control { border-color: #eee; min-height: 41px; box-shadow: none !important; }
+    .form-control:focus { border-color: #5cd3b4; }
+    .form-control, .btn { border-radius: 3px; }
+    .signup-form { width: 500px; margin: 0 auto; padding: 30px 0; }
+    .signup-form h2 { color: #333; margin: 0 0 30px 0; display: inline-block; padding: 0 30px 10px 0; border-bottom: 3px solid #ffffff; }
+    .signup-form form { color: #999; border-radius: 3px; margin-bottom: 15px; background: #fff; box-shadow: 0px 2px 2px rgba(0,0,0,0.3); padding: 30px; }
+    .signup-form .form-group { margin-bottom: 20px; }
+    .signup-form label { font-weight: normal; font-size: 13px; }
+    .signup-form .btn { font-size: 16px; font-weight: bold; background: #161df0; border: none; margin-top: 20px; min-width: 140px; }
+    .signup-form .btn:hover, .signup-form .btn:focus { background: #41cba9; outline: none !important; }
+    .signup-form a { color: #2b04ff; text-decoration: underline; }
+    .signup-form a:hover { text-decoration: none; }
+    .signup-form form a { color: #5cd3b4; text-decoration: none; }
+    .signup-form form a:hover { text-decoration: underline; }
+  </style>
+  <title>Admin Login - Library Management System</title>
+</head>
+<body>
+<!-- Navbar (Public) -->
+<div class="bs-example">
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+    <a href="/" class="navbar-brand">Library Management</a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+      <div class="navbar-nav">
+        <a href="/" class="nav-item nav-link active">Home</a>
+        <a href="/adminclick/" class="nav-item nav-link">Admin</a>
+        <a href="/studentclick/" class="nav-item nav-link">Student</a>
+      </div>
+      <div class="navbar-nav">
+        <a href="/aboutus/" class="nav-item nav-link">About Us</a>
+        <a href="/contactus/" class="nav-item nav-link">Contact Us</a>
+      </div>
+    </div>
+  </nav>
+</div>
+<br><br>
+<center><h3 style="margin-bottom:0px;" class="alert alert-success">Login As Admin!</h3></center>
+<div class="signup-form">
+  <form method="post" id="adminLoginForm" class="form-horizontal">
+    <center><h2>Admin Login</h2></center>
+    <div class="form-group">
+      <label class="control-label col-xs-4">Username</label>
+      <div class="col-xs-8">
+        <input type="text" name="username" id="username" class="form-control" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="control-label col-xs-4">Password</label>
+      <div class="col-xs-8">
+        <input type="password" name="password" id="password" class="form-control" required>
+      </div>
+    </div>
+    <div id="loginError" class="alert alert-danger" style="display:none;"></div>
+    <div class="form-group">
+      <div class="col-xs-8 col-xs-offset-4">
+        <button type="submit" class="btn btn-primary btn-lg">Login</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- Footer -->
+<footer style="padding:0;background-color:black;margin:0;">
+  <p style="text-align:center;">
+    <a href="https://facebook.com/sumit.luv/" class="fa fa-facebook" style="background:#3B5998;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;margin-top:30px;"></a>
+    <a href="https://api.whatsapp.com/send?phone=919572181024" class="fa fa-whatsapp" style="background:#25d366;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+    <a href="https://instagram.com/sumit.luv" class="fa fa-instagram" style="background:#125688;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+    <a href="https://twitter.com/sumitkumar1503" class="fa fa-twitter" style="background:#55ACEE;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+  </p><br>
+  <div class="container"><div class="row"><div class="col-md-12 col-sm-12">
+    <div style="color:#ffffff;text-align:center;"><p>Made in India <br>Copyright &copy; 2020 LazyCoder</p></div>
+  </div></div></div>
+</footer>
+<script>
+document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = new URLSearchParams();
+  data.append('username', document.getElementById('username').value);
+  data.append('password', document.getElementById('password').value);
+  data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+  fetch('/adminlogin/', {method:'POST', body:data, credentials:'include', redirect:'follow'})
+  .then(r => {
+    if(r.url.includes('afterlogin') || r.url.includes('addbook') || r.url === window.location.origin + '/') {
+      window.location.href = '/afterlogin';
+    } else if(r.ok && !r.url.includes('adminlogin')) {
+      window.location.href = '/afterlogin';
+    } else {
+      document.getElementById('loginError').textContent = 'Invalid credentials. Please try again.';
+      document.getElementById('loginError').style.display = 'block';
+    }
+  })
+  .catch(() => {
+    document.getElementById('loginError').textContent = 'Network error. Please try again.';
+    document.getElementById('loginError').style.display = 'block';
+  });
+});
+function getCookie(name) {
+  let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  return v ? v[2] : null;
+}
+</script>
+</body>
+</html>

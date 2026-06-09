@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <style media="screen">
+    table.redTable { border:2px solid #A40808; background-color:#EEE7DB; width:100%; text-align:center; border-collapse:collapse; }
+    table.redTable td, table.redTable th { border:1px solid #AAAAAA; padding:3px 2px; }
+    table.redTable tbody td { font-size:13px; }
+    table.redTable tr:nth-child(even) { background:#F5C8BF; }
+    table.redTable thead { background:#A40808; }
+    table.redTable thead th { font-size:19px; font-weight:bold; color:#FFFFFF; text-align:center; border-left:2px solid #A40808; }
+    table.redTable thead th:first-child { border-left:none; }
+    table.redTable tfoot { font-size:13px; font-weight:bold; color:#FFFFFF; background:#A40808; }
+    table.redTable tfoot td { font-size:13px; }
+    table.redTable tfoot .links { text-align:right; }
+    table.redTable tfoot .links a { display:inline-block; background:#FFFFFF; color:#A40808; padding:2px 8px; border-radius:5px; }
+  </style>
+  <style type="text/css">
+    .bs-example { margin: 0px; }
+    .navbar-brand { font-size: 20px; font-family: sans-serif; }
+  </style>
+  <title>View Issued Books - Library Management System</title>
+</head>
+<body>
+<!-- Navbar (Admin) -->
+<div class="bs-example">
+  <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
+    <a href="/" class="navbar-brand">Library Management</a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+      <div class="navbar-nav">
+        <a href="/" class="nav-item nav-link active">Home</a>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Book</a>
+          <div class="dropdown-menu">
+            <a href="/addbook/" class="dropdown-item">Add Book</a>
+            <a href="/viewbook/" class="dropdown-item">View Book</a>
+          </div>
+        </div>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Issue Book</a>
+          <div class="dropdown-menu">
+            <a href="/issuebook/" class="dropdown-item">Issue New Book</a>
+            <a href="/viewissuedbook/" class="dropdown-item">View Issued Book</a>
+          </div>
+        </div>
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Student</a>
+          <div class="dropdown-menu">
+            <a href="/viewstudent/" class="dropdown-item">View Student</a>
+          </div>
+        </div>
+      </div>
+      <div class="navbar-nav">
+        <a href="#" class="nav-item nav-link" id="logoutBtn" onclick="logout()" style="cursor:pointer;">LOGOUT</a>
+        <a href="/aboutus/" class="nav-item nav-link">About Us</a>
+        <a href="/contactus/" class="nav-item nav-link">Contact Us</a>
+      </div>
+    </div>
+  </nav>
+</div>
+<br><br>
+<h3 class="p-3 mb-2 bg-primary text-white" style="font-size:50px;text-align:center;margin-bottom:0px;">Issued books to Student !</h3>
+<div id="issuedContainer">
+  <p style="text-align:center;">Loading issued books...</p>
+</div>
+<br><br><br><br><br><br><br><br><br>
+<!-- Footer -->
+<footer style="padding:0;background-color:black;margin:0;">
+  <p style="text-align:center;">
+    <a href="https://facebook.com/sumit.luv/" class="fa fa-facebook" style="background:#3B5998;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;margin-top:30px;"></a>
+    <a href="https://api.whatsapp.com/send?phone=919572181024" class="fa fa-whatsapp" style="background:#25d366;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+    <a href="https://instagram.com/sumit.luv" class="fa fa-instagram" style="background:#125688;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+    <a href="https://twitter.com/sumitkumar1503" class="fa fa-twitter" style="background:#55ACEE;color:white;padding:20px;font-size:23px;width:60px;text-align:center;text-decoration:none;margin:5px 2px;border-radius:50%;"></a>
+  </p><br>
+  <div class="container"><div class="row"><div class="col-md-12 col-sm-12">
+    <div style="color:#ffffff;text-align:center;"><p>Made in India <br>Copyright &copy; 2020 LazyCoder</p></div>
+  </div></div></div>
+</footer>
+<script>
+function logout() {
+  fetch('/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+    .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
+    .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
+}
+function getCookie(name) {
+  let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  return v ? v[2] : null;
+}
+</script>
+<script>
+fetch('/api/issuedbooks/', {credentials:'include'})
+  .then(r => r.json())
+  .then(data => {
+    const container = document.getElementById('issuedContainer');
+    if (!data || data.length === 0) {
+      container.innerHTML = '<h1>0 book Issued</h1>';
+      return;
+    }
+    let html = `<table class="redTable"><thead><tr>
+      <th>Student Name</th><th>Student Enrollment</th><th>Book Name</th><th>Book Author</th>
+      <th>Issue Date</th><th>Expiry Date</th><th>Fine</th><th>Status</th>
+    </tr></thead><tfoot><tr><td colspan="7"><div class="links"></div></td></tr></tfoot><tbody>`;
+    data.forEach(t => {
+      const fine = t.status === 'Returned' ? 'No Fine' : t.fine;
+      html += `<tr>
+        <td>${t.student_name}</td><td>${t.enrollment}</td><td>${t.book_name}</td><td>${t.book_author}</td>
+        <td>${t.issue_date}</td><td>${t.expiry_date}</td><td>${fine}</td><td>${t.status}</td>
+      </tr>`;
+    });
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  })
+  .catch(() => {
+    document.getElementById('issuedContainer').innerHTML = '<p class="alert alert-danger">Failed to load data. Please ensure you are logged in.</p>';
+  });
+</script>
+</body>
+</html>
