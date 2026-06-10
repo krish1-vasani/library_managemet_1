@@ -42,12 +42,12 @@
     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
       <div class="navbar-nav">
         <a href="/" class="nav-item nav-link active">Home</a>
-        <a href="/adminclick/" class="nav-item nav-link">Admin</a>
-        <a href="/studentclick/" class="nav-item nav-link">Student</a>
+        <a href="adminclick.html" class="nav-item nav-link">Admin</a>
+        <a href="studentclick.html" class="nav-item nav-link">Student</a>
       </div>
       <div class="navbar-nav">
-        <a href="/aboutus/" class="nav-item nav-link">About Us</a>
-        <a href="/contactus/" class="nav-item nav-link">Contact Us</a>
+        <a href="aboutus.html" class="nav-item nav-link">About Us</a>
+        <a href="contactus.html" class="nav-item nav-link">Contact Us</a>
       </div>
     </div>
   </nav>
@@ -90,18 +90,20 @@
   </div></div></div>
 </footer>
 <script>
+const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
+
 document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const data = new URLSearchParams();
   data.append('username', document.getElementById('username').value);
   data.append('password', document.getElementById('password').value);
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-  fetch('/adminlogin/', {method:'POST', body:data, credentials:'include', redirect:'follow'})
+  fetch(`${API_BASE}/adminlogin.html`, {method:'POST', body:data, credentials:'include', redirect:'follow'})
   .then(r => {
     if(r.url.includes('afterlogin') || r.url.includes('addbook') || r.url === window.location.origin + '/') {
-      window.location.href = '/afterlogin';
+      window.location.href = 'afterlogin.html';
     } else if(r.ok && !r.url.includes('adminlogin')) {
-      window.location.href = '/afterlogin';
+      window.location.href = 'afterlogin.html';
     } else {
       document.getElementById('loginError').textContent = 'Invalid credentials. Please try again.';
       document.getElementById('loginError').style.display = 'block';

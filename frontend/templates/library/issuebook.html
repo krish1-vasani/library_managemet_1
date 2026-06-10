@@ -45,28 +45,28 @@
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Book</a>
           <div class="dropdown-menu">
-            <a href="/addbook/" class="dropdown-item">Add Book</a>
-            <a href="/viewbook/" class="dropdown-item">View Book</a>
+            <a href="addbook.html" class="dropdown-item">Add Book</a>
+            <a href="viewbook.html" class="dropdown-item">View Book</a>
           </div>
         </div>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Issue Book</a>
           <div class="dropdown-menu">
-            <a href="/issuebook/" class="dropdown-item">Issue New Book</a>
-            <a href="/viewissuedbook/" class="dropdown-item">View Issued Book</a>
+            <a href="issuebook.html" class="dropdown-item">Issue New Book</a>
+            <a href="viewissuedbook.html" class="dropdown-item">View Issued Book</a>
           </div>
         </div>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Student</a>
           <div class="dropdown-menu">
-            <a href="/viewstudent/" class="dropdown-item">View Student</a>
+            <a href="viewstudent.html" class="dropdown-item">View Student</a>
           </div>
         </div>
       </div>
       <div class="navbar-nav">
         <a href="#" class="nav-item nav-link" id="logoutBtn" onclick="logout()" style="cursor:pointer;">LOGOUT</a>
-        <a href="/aboutus/" class="nav-item nav-link">About Us</a>
-        <a href="/contactus/" class="nav-item nav-link">Contact Us</a>
+        <a href="aboutus.html" class="nav-item nav-link">About Us</a>
+        <a href="contactus.html" class="nav-item nav-link">Contact Us</a>
       </div>
     </div>
   </nav>
@@ -99,7 +99,7 @@
       </div>
     </div>
   </form>
-  <div class="text-center">View Issued Book to Student <a href="/viewissuedbook/">Click here</a></div>
+  <div class="text-center">View Issued Book to Student <a href="viewissuedbook.html">Click here</a></div>
 </div>
 <!-- Footer -->
 <footer style="padding:0;background-color:black;margin:0;">
@@ -114,8 +114,10 @@
   </div></div></div>
 </footer>
 <script>
+const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
+
 function logout() {
-  fetch('/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch(`${API_BASE}/logout/`, {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }
@@ -125,8 +127,10 @@ function getCookie(name) {
 }
 </script>
 <script>
+const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
+
 // Load books and students from API
-fetch('/api/books/', {credentials:'include'})
+fetch(`${API_BASE}/books.html`, {credentials:'include'})
   .then(r => r.json())
   .then(books => {
     const sel = document.getElementById('isbn2');
@@ -138,7 +142,7 @@ fetch('/api/books/', {credentials:'include'})
     });
   }).catch(() => {});
 
-fetch('/api/students/', {credentials:'include'})
+fetch(`${API_BASE}/students.html`, {credentials:'include'})
   .then(r => r.json())
   .then(students => {
     const sel = document.getElementById('enrollment2');
@@ -154,9 +158,9 @@ document.getElementById('issueBookForm').addEventListener('submit', function(e) 
   e.preventDefault();
   const data = new URLSearchParams(new FormData(e.target));
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-  fetch('/issuebook/', {method:'POST', body:data, credentials:'include'})
+  fetch(`${API_BASE}/issuebook.html`, {method:'POST', body:data, credentials:'include'})
   .then(r => {
-    if(r.ok || r.redirected) window.location.href = '/bookissued/';
+    if(r.ok || r.redirected) window.location.href = 'bookissued.html';
     else {
       document.getElementById('issueError').textContent = 'Failed to issue book. Please try again.';
       document.getElementById('issueError').style.display = 'block';

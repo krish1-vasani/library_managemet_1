@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 
+from django import http
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Frontend folder is one level up from backend
@@ -19,7 +21,9 @@ DEBUG = True
 allowed_hosts = os.environ.get('ALLOWED_HOSTS', '*')
 
 if allowed_hosts == '*':
-    ALLOWED_HOSTS = ['*']
+    ALLOWED_HOSTS = ['*',
+                    'django-alb-1692330624.ap-south-1.elb.amazonaws.com',
+                    ]
 else:
     ALLOWED_HOSTS = allowed_hosts.split(',')
 
@@ -32,9 +36,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'library',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -44,6 +50,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = 'librarymanagement.urls'
 
 TEMPLATES = [
@@ -122,11 +129,17 @@ EMAIL_BACKEND = os.environ.get(
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'True') == 'True'
 EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'shivamdube1285@gmail.com')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'pqna hzjj ypjw cpud')
 
 # FIX: CSRF trusted origins for production (AWS EC2 / custom domain)
-CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'http://localhost,http://127.0.0.1').split(',')
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS  = os.environ.get(
+    'CORS_ALLOWED_ORIGINS', 
+    'http://localhost,http://127.0.0.1,http://django-alb-1692330624.ap-south-1.elb.amazonaws.com,http://django-alb-1692330624.ap-south-1.elb.amazonaws.com'
+).split(',')
+
 
 # FIX: Session cookie settings for production compatibility
 SESSION_COOKIE_SAMESITE = 'Lax'

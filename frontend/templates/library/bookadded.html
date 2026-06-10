@@ -28,28 +28,28 @@
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Book</a>
           <div class="dropdown-menu">
-            <a href="/addbook/" class="dropdown-item">Add Book</a>
-            <a href="/viewbook/" class="dropdown-item">View Book</a>
+            <a href="addbook.html" class="dropdown-item">Add Book</a>
+            <a href="viewbook.html" class="dropdown-item">View Book</a>
           </div>
         </div>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Issue Book</a>
           <div class="dropdown-menu">
-            <a href="/issuebook/" class="dropdown-item">Issue New Book</a>
-            <a href="/viewissuedbook/" class="dropdown-item">View Issued Book</a>
+            <a href="issuebook.html" class="dropdown-item">Issue New Book</a>
+            <a href="viewissuedbook.html" class="dropdown-item">View Issued Book</a>
           </div>
         </div>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Student</a>
           <div class="dropdown-menu">
-            <a href="/viewstudent/" class="dropdown-item">View Student</a>
+            <a href="viewstudent.html" class="dropdown-item">View Student</a>
           </div>
         </div>
       </div>
       <div class="navbar-nav">
         <a href="#" class="nav-item nav-link" id="logoutBtn" onclick="logout()" style="cursor:pointer;">LOGOUT</a>
-        <a href="/aboutus/" class="nav-item nav-link">About Us</a>
-        <a href="/contactus/" class="nav-item nav-link">Contact Us</a>
+        <a href="aboutus.html" class="nav-item nav-link">About Us</a>
+        <a href="contactus.html" class="nav-item nav-link">Contact Us</a>
       </div>
     </div>
   </nav>
@@ -58,8 +58,8 @@
 <h3 class="p-3 mb-2 bg-primary text-white" style="font-size:50px;text-align:center;">Book Added Successfully !</h3>
 <br><br>
 <div class="options" style="text-align:center">
-  <a href="/addbook/" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Click here to add more Book</a><br><br>
-  <a href="/viewbook/" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Click here to view Book in Library</a><br><br>
+  <a href="addbook.html" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Click here to add more Book</a><br><br>
+  <a href="viewbook.html" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Click here to view Book in Library</a><br><br>
 </div>
 <br>
 <!-- Footer -->
@@ -75,8 +75,10 @@
   </div></div></div>
 </footer>
 <script>
+const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
+
 function logout() {
-  fetch('/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch(`${API_BASE}/logout/`, {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }

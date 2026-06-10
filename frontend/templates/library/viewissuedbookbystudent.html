@@ -41,14 +41,14 @@
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Issue Book</a>
           <div class="dropdown-menu">
-            <a href="/viewissuedbookbystudent/" class="dropdown-item">View Issued Book</a>
+            <a href="viewissuedbookbystudent.html" class="dropdown-item">View Issued Book</a>
           </div>
         </div>
       </div>
       <div class="navbar-nav">
         <a href="#" class="nav-item nav-link" onclick="logout()" style="cursor:pointer;">LOGOUT</a>
-        <a href="/aboutus/" class="nav-item nav-link">About Us</a>
-        <a href="/contactus/" class="nav-item nav-link">Contact Us</a>
+        <a href="aboutus.html" class="nav-item nav-link">About Us</a>
+        <a href="contactus.html" class="nav-item nav-link">Contact Us</a>
       </div>
     </div>
   </nav>
@@ -72,8 +72,10 @@
   </div></div></div>
 </footer>
 <script>
+const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
+
 function logout() {
-  fetch('/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch(`${API_BASE}/logout/`, {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }
@@ -83,7 +85,9 @@ function getCookie(name) {
 }
 </script>
 <script>
-fetch('/api/myissuedbooks/', {credentials:'include'})
+const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
+
+fetch(`${API_BASE}/myissuedbooks.html`, {credentials:'include'})
   .then(r => r.json())
   .then(data => {
     const container = document.getElementById('myBooksContainer');
@@ -118,11 +122,23 @@ fetch('/api/myissuedbooks/', {credentials:'include'})
   .catch(() => {
     document.getElementById('myBooksContainer').innerHTML = '<p class="alert alert-danger">Failed to load books. Please ensure you are logged in.</p>';
   });
-
 function returnBook(id) {
-  fetch('/returnbook/' + id + '/', {method:'GET', credentials:'include'})
-    .then(() => location.reload())
-    .catch(() => alert('Failed to return book. Please try again.'));
+  fetch(`${API_BASE}/returnbook/${id}/`, {
+    method: 'POST',
+    credentials: 'include'
+  })
+  .then(response => response.json())
+  .then(data => {
+      if(data.success){
+          location.reload();
+      }else{
+          alert('Return failed');
+      }
+  })
+  .catch(err => {
+      console.error(err);
+      alert('Failed to return book');
+  });
 }
 </script>
 </body>

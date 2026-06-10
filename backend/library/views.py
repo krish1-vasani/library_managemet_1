@@ -16,26 +16,21 @@ from django.contrib.auth.decorators import login_required
 # ── Health Check ─────────────────────────────────────────────────────────────
 @csrf_exempt
 def studentlogin_view(request):
-    print("METHOD:", request.method)
-
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        print("USERNAME:", username)
-        print("PASSWORD:", password)
-
         user = authenticate(
-            request,
             username=username,
             password=password
         )
 
-        print("AUTH RESULT:", user)
+        print("USERNAME =", username)
+        print("USER =", user)
 
-        if user is not None:
+        if user:
             login(request, user)
-            return redirect('afterlogin')
+            return redirect('/studentafterlogin.html')
 
     return render(request, 'library/studentlogin.html')
 
@@ -48,9 +43,12 @@ def adminlogin_view(request):
 
         user = authenticate(request, username=username, password=password)
 
+        print("ADMIN USERNAME =", username)
+        print("ADMIN USER =", user)
+
         if user is not None and (user.is_staff or user.is_superuser):
             login(request, user)
-            return redirect('afterlogin')
+            return redirect('/adminafterlogin.html')
 
     return render(request, 'library/adminlogin.html')
 
@@ -299,13 +297,16 @@ def viewissuedbookbystudent(request):
 
     return render(request, 'library/viewissuedbookbystudent.html', {'li1': li1, 'li2': li2})
 
+def return_book(request, pk):
+    if request.method == "POST":
+        issued_book = get_object_or_404(models.IssuedBook, pk=pk)
 
-def returnbook(request, id):
-    """Mark a book as returned. Accessible via GET (linked from student page)."""
-    issued_book = get_object_or_404(models.IssuedBook, pk=id)
-    issued_book.status = 'Returned'
-    issued_book.save()
-    return redirect('viewissuedbookbystudent')
+        issued_book.status = "Returned"
+        issued_book.save()
+
+        return JsonResponse({"success": True})
+
+    return JsonResponse({"success": False}, status=405)
 
 
 # ── JSON API endpoints (consumed by JS fetch() in HTML templates) ─────────────
@@ -400,3 +401,6 @@ def api_deletebook(request, pk):
         book.delete()
         return JsonResponse({'success': True})
     return JsonResponse({'error': 'Method not allowed'}, status=405)
+
+def contactussuccess(request):
+    return render(request, 'library/contactussuccess.html')
