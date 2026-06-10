@@ -122,10 +122,8 @@
   </div></div></div>
 </footer>
 <script>
-
-
 function logout() {
-  fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='home.html'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='home.html'; });
 }
@@ -140,7 +138,7 @@ document.getElementById('addBookForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const data = new URLSearchParams(new FormData(e.target));
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-  fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/addbook.html', {method:'POST', body:data, credentials:'include'})
+  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/addbook.html', {method:'POST', body:data, credentials:'include'})
   .then(r => {
     if(r.ok || r.redirected) window.location.href = 'bookadded.html';
     else {

@@ -94,7 +94,7 @@ document.getElementById('studentLoginForm').addEventListener('submit', function(
   data.append('username', document.getElementById('username').value);
   data.append('password', document.getElementById('password').value);
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-  fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/studentlogin.html', {method:'POST', body:data, credentials:'include', redirect:'follow'})
+  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/studentlogin.html', {method:'POST', body:data, credentials:'include', redirect:'follow'})
   .then(r => {
     if(r.url.includes('afterlogin') || (!r.url.includes('studentlogin.html') && r.ok)) {
       window.location.href = 'afterlogin.html'; 

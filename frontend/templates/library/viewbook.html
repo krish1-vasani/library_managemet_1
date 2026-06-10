@@ -152,7 +152,7 @@ function deleteBook(bookId) {
         return;
     }
 
-    fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/deletebook/${bookId}/', {
+    fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/deletebook/${bookId}/', {
         method: "POST",
         credentials: "include",
         headers: {

@@ -75,9 +75,8 @@
   </div></div></div>
 </footer>
 <script>
-
 function logout() {
-  fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }

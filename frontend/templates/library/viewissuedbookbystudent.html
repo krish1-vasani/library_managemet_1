@@ -74,7 +74,7 @@
 <script>
 
 function logout() {
-  fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }
@@ -85,7 +85,7 @@ function getCookie(name) {
 </script>
 <script>
 
-fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/myissuedbooks.html', {credentials:'include'})
+fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/myissuedbooks.html', {credentials:'include'})
   .then(r => r.json())
   .then(data => {
     const container = document.getElementById('myBooksContainer');
@@ -121,7 +121,7 @@ fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/myissuedbooks.html', {
     document.getElementById('myBooksContainer').innerHTML = '<p class="alert alert-danger">Failed to load books. Please ensure you are logged in.</p>';
   });
 function returnBook(id) {
-  fetch(`library-ALB-444938371.ap-south-1.elb.amazonaws.com/returnbook/${id}/`, {
+  fetch(`http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/returnbook/${id}/`, {
     method: 'POST',
     credentials: 'include'
   })

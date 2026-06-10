@@ -114,10 +114,9 @@
   </div></div></div>
 </footer>
 <script>
-const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
 
 function logout() {
-  fetch(`${API_BASE}/logout/`, {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }
@@ -129,7 +128,7 @@ function getCookie(name) {
 <script>
 
 // Load books and students from API
-fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/books.html', {credentials:'include'})
+fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/books.html', {credentials:'include'})
   .then(r => r.json())
   .then(books => {
     const sel = document.getElementById('isbn2');
@@ -141,7 +140,7 @@ fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/books.html', {credenti
     });
   }).catch(() => {});
 
-fetch(`${API_BASE}/students.html`, {credentials:'include'})
+fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/students.html', {credentials:'include'})
   .then(r => r.json())
   .then(students => {
     const sel = document.getElementById('enrollment2');
@@ -157,7 +156,7 @@ document.getElementById('issueBookForm').addEventListener('submit', function(e) 
   e.preventDefault();
   const data = new URLSearchParams(new FormData(e.target));
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-  fetch(`${API_BASE}/issuebook.html`, {method:'POST', body:data, credentials:'include'})
+  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/issuebook.html', {method:'POST', body:data, credentials:'include'})
   .then(r => {
     if(r.ok || r.redirected) window.location.href = 'bookissued.html';
     else {
