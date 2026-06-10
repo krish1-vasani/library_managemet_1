@@ -98,21 +98,27 @@ document.getElementById('adminLoginForm').addEventListener('submit', function(e)
   data.append('username', document.getElementById('username').value);
   data.append('password', document.getElementById('password').value);
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/adminlogin.html', {method:'POST', body:data, credentials:'include', redirect:'follow'})
-  .then(r => {
-    if(r.url.includes('afterlogin') || r.url.includes('addbook') || r.url === window.location.origin + '/') {
-      window.location.href = 'afterlogin.html';
-    } else if(r.ok && !r.url.includes('adminlogin')) {
-      window.location.href = 'afterlogin.html';
+  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/adminlogin.html', {
+    method: 'POST',
+    body: data,
+    credentials: 'include',
+    redirect: 'follow'
+})
+.then(r => {
+    console.log("Status:", r.status);
+    console.log("URL:", r.url);
+
+    if (r.ok) {
+        window.location.href = 'adminafterlogin.html';
     } else {
-      document.getElementById('loginError').textContent = 'Invalid credentials. Please try again.';
-      document.getElementById('loginError').style.display = 'block';
+        document.getElementById('loginError').textContent =
+            'Invalid credentials. Please try again.';
+        document.getElementById('loginError').style.display = 'block';
     }
-  })
-  .catch(() => {
-    document.getElementById('loginError').textContent = 'Network error. Please try again.';
-    document.getElementById('loginError').style.display = 'block';
-  });
+})
+.catch(err => {
+    console.log(err);
+});
 });
 function getCookie(name) {
   let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');

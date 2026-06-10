@@ -135,6 +135,9 @@ EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'pqna hzjj ypjw cpud
 # FIX: CSRF trusted origins for production (AWS EC2 / custom domain)
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = [
+    'http://librarymanagement-v4.s3-website.ap-south-1.amazonaws.com',
+]
 CORS_ALLOWED_ORIGINS  = os.environ.get(
     'CORS_ALLOWED_ORIGINS', 
     'http://localhost,http://127.0.0.1,http://library-ALB-444938371.ap-south-1.elb.amazonaws.com'
