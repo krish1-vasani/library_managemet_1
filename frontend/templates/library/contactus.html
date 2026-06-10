@@ -74,7 +74,6 @@
   </div></div></div>
 </footer>
 <script>
-const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
 
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   e.preventDefault();
@@ -83,7 +82,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     email: document.getElementById('contactEmail').value,
     message: document.getElementById('contactMessage').value
   };
-  fetch(`${API_BASE}/contactus.html`, {
+  fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/contactus.html', {
     method: 'POST',
     headers: {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken')},
     body: JSON.stringify(body)

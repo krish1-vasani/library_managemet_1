@@ -86,10 +86,9 @@
   </div></div></div>
 </footer>
 <script>
-const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
 
 function logout() {
-  fetch(`${API_BASE}/logout/`, {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }
@@ -99,9 +98,8 @@ function getCookie(name) {
 }
 </script>
 <script>
-const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
 
-fetch(`${API_BASE}/students.html`, {credentials:'include'})
+fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/students.html', {credentials:'include'})
   .then(r => r.json())
   .then(students => {
     const container = document.getElementById('studentContainer');

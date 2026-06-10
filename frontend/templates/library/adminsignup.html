@@ -95,14 +95,13 @@
   </div></div></div>
 </footer>
 <script>
-const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
 
 document.getElementById('adminSignupForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const form = e.target;
   const data = new URLSearchParams(new FormData(form));
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-  fetch(`${API_BASE}/adminsignup.html`, {method:'POST', body:data, credentials:'include'})
+  fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/adminsignup.html', {method:'POST', body:data, credentials:'include'})
   .then(r => { window.location.href = 'adminlogin.html'; })
   .catch(() => {
     document.getElementById('signupError').textContent = 'Signup failed. Please try again.';

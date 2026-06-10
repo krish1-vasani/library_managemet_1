@@ -127,10 +127,9 @@ function getCookie(name) {
 }
 </script>
 <script>
-const API_BASE = 'http://django-alb-1692330624.ap-south-1.elb.amazonaws.com';
 
 // Load books and students from API
-fetch(`${API_BASE}/books.html`, {credentials:'include'})
+fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/books.html', {credentials:'include'})
   .then(r => r.json())
   .then(books => {
     const sel = document.getElementById('isbn2');

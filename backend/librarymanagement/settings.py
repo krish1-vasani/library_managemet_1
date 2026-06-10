@@ -22,7 +22,7 @@ allowed_hosts = os.environ.get('ALLOWED_HOSTS', '*')
 
 if allowed_hosts == '*':
     ALLOWED_HOSTS = ['*',
-                    'django-alb-1692330624.ap-south-1.elb.amazonaws.com',
+                    'library-ALB-444938371.ap-south-1.elb.amazonaws.com',
                     ]
 else:
     ALLOWED_HOSTS = allowed_hosts.split(',')
@@ -137,7 +137,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS  = os.environ.get(
     'CORS_ALLOWED_ORIGINS', 
-    'http://localhost,http://127.0.0.1,http://django-alb-1692330624.ap-south-1.elb.amazonaws.com,http://django-alb-1692330624.ap-south-1.elb.amazonaws.com'
+    'http://localhost,http://127.0.0.1,http://library-ALB-444938371.ap-south-1.elb.amazonaws.com'
 ).split(',')
 
 
