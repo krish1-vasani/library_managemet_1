@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
@@ -89,7 +88,7 @@
 <script>
 
 function logout() {
-  fetch(`http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/`, {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch(`http://library-1443069192.ap-south-1.elb.amazonaws.com/logout/`, {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }
@@ -99,7 +98,7 @@ function getCookie(name) {
 }
 </script>
 <script>
-fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books/', {
+fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/books/', {
     method: 'GET',
     credentials: 'include'
 })
@@ -125,7 +124,6 @@ fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books/', {
                 <th>ISBN</th>
                 <th>Author</th>
                 <th>Category</th>
-                <th>Book ID</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -140,13 +138,6 @@ fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books/', {
             <td>${book.isbn}</td>
             <td>${book.author}</td>
             <td>${book.category}</td>
-            <td>${book.id}</td>
-            <td>
-                <button class="btn btn-danger btn-sm"
-                    onclick="deleteBook(${book.id}, this)">
-                    Delete
-                </button>
-            </td>
         </tr>
         `;
     });
@@ -165,6 +156,7 @@ fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books/', {
 });
 
 // ── Delete Book ─────────────────────────────────────────────
+/*
 function deleteBook(bookId, btn) {
   if (!confirm('Are you sure you want to delete this book?')) return;
 
@@ -175,7 +167,7 @@ function deleteBook(bookId, btn) {
   const csrfToken = getCookie('csrftoken');
   console.log('CSRF Token:', csrfToken); // Check if this is null or a value
 
-  fetch(`http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/deletebook/${bookId}/`, {
+  fetch(`http://library-1443069192.ap-south-1.elb.amazonaws.com/api/deletebook/${bookId}/`, {
     method: 'POST',
     credentials: 'include',       // sends session cookie
     headers: {
@@ -207,7 +199,7 @@ function deleteBook(bookId, btn) {
     btn.disabled = false;
     btn.textContent = 'Delete';
   });
-}
+}*/
 </script>
 </body>
 </html>

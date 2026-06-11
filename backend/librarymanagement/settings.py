@@ -22,7 +22,7 @@ allowed_hosts = os.environ.get('ALLOWED_HOSTS', '*')
 
 if allowed_hosts == '*':
     ALLOWED_HOSTS = ['*',
-                    'library-ALB-444938371.ap-south-1.elb.amazonaws.com',
+                    'http://library-1443069192.ap-south-1.elb.amazonaws.com',
                     ]
 else:
     ALLOWED_HOSTS = allowed_hosts.split(',')
@@ -137,11 +137,11 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = [
     'http://librarymanagement-v4.s3-website.ap-south-1.amazonaws.com',
-    'http://library-ALB-444938371.ap-south-1.elb.amazonaws.com',    
+    'http://library-1443069192.ap-south-1.elb.amazonaws.com',    
 ]
 CORS_ALLOWED_ORIGINS  = os.environ.get(
     'CORS_ALLOWED_ORIGINS', 
-    'http://localhost,http://127.0.0.1,http://library-ALB-444938371.ap-south-1.elb.amazonaws.com,http://librarymanagement-v4.s3-website.ap-south-1.amazonaws.com'
+    'http://localhost,http://127.0.0.1,http://library-1443069192.ap-south-1.elb.amazonaws.com,http://librarymanagement-v4.s3-website.ap-south-1.amazonaws.com'
 ).split(',')
 
 

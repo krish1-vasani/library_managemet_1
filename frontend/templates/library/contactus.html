@@ -82,7 +82,7 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     email: document.getElementById('contactEmail').value,
     message: document.getElementById('contactMessage').value
   };
-  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/contactus.html', {
+  fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/contactus.html', {
     method: 'POST',
     headers: {'Content-Type': 'application/json', 'X-CSRFToken': getCookie('csrftoken')},
     body: JSON.stringify(body)

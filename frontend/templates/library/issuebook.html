@@ -116,7 +116,7 @@
 <script>
 
 function logout() {
-  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }
@@ -128,7 +128,7 @@ function getCookie(name) {
 <script>
 
 // Load books and students from API
-fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books/', {
+fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/books/', {
   method: 'GET',
   credentials: 'include'
 })
@@ -148,7 +148,7 @@ fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books/', {
 .catch(err => console.error('Books load error:', err));
 
 // ── Load Students dropdown ───────────────────────────────────
-fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/students/', {
+fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/students/', {
   method: 'GET',
   credentials: 'include'
 })
@@ -193,7 +193,7 @@ document.getElementById('issueBookForm').addEventListener('submit', function(e) 
   data.append('enrollment2', enrollment);
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
 
-  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/issuebook.html', {
+  fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/issuebook.html', {
     method: 'POST',
     credentials: 'include',
     headers: {
