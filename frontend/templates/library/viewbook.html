@@ -103,11 +103,10 @@ fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books/', {
     method: 'GET',
     credentials: 'include'
 })
-.then(response => {
-    if (!response.ok) {
-        throw new Error(`HTTP ${response.status}`);
-    }
-    return response.json();
+.then(async response => {
+    const text = await response.text();
+    console.log(text);
+    return JSON.parse(text);
 })
 .then(books => {
 
