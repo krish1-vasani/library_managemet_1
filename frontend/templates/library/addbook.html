@@ -133,22 +133,45 @@ function getCookie(name) {
 }
 </script>
 <script>
-
 document.getElementById('addBookForm').addEventListener('submit', function(e) {
   e.preventDefault();
+
+  const errorDiv = document.getElementById('bookError');
+  errorDiv.style.display = 'none';
+
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Adding...';
+
   const data = new URLSearchParams(new FormData(e.target));
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/addbook.html', {method:'POST', body:data, credentials:'include'})
-  .then(r => {
-    if(r.ok || r.redirected) window.location.href = 'bookadded.html';
-    else {
-      document.getElementById('bookError').textContent = 'Failed to add book. Please try again.';
-      document.getElementById('bookError').style.display = 'block';
+
+  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/addbook/', {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'X-CSRFToken': getCookie('csrftoken')
+      // NO Content-Type — browser sets it for URLSearchParams, avoids 403
+    },
+    body: data
+  })
+  .then(async response => {
+    const text = await response.text();
+    console.log('Add status:', response.status);
+    console.log('Add response:', text.substring(0, 300));
+
+    if (response.ok || response.redirected) {
+      window.location.href = 'bookadded.html';
+    } else {
+      throw new Error('Server returned ' + response.status);
     }
   })
-  .catch(() => {
-    document.getElementById('bookError').textContent = 'Network error. Please try again.';
-    document.getElementById('bookError').style.display = 'block';
+  .catch(err => {
+    console.error('Add book error:', err);
+    errorDiv.textContent = 'Failed to add book: ' + err.message;
+    errorDiv.style.display = 'block';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'ADD';
   });
 });
 </script>

@@ -36,7 +36,7 @@ urlpatterns = [
     path('adminafterlogin.html', views.adminafterlogin_view, name='adminafterlogin'),
 
     # ── Admin-only pages ──────────────────────────────────────────────────────
-    path('addbook.html', views.addbook_view, name='addbook'),
+    path('api/addbook/', views.addbook_view, name='addbook'),
     path('bookadded.html', views.bookadded_view, name='bookadded'),
     path('viewbook.html', views.viewbook_view, name='viewbook'),
     path('issuebook.html', views.issuebook_view, name='issuebook'),
