@@ -128,7 +128,7 @@ function getCookie(name) {
 <script>
 
 // Load books and students from API
-fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books.html', {
+fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books/', {
   method: 'GET',
   credentials: 'include'
 })
@@ -148,7 +148,7 @@ fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books.html'
 .catch(err => console.error('Books load error:', err));
 
 // ── Load Students dropdown ───────────────────────────────────
-fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/students.html', {
+fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/students/', {
   method: 'GET',
   credentials: 'include'
 })

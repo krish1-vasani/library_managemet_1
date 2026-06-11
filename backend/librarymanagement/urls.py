@@ -22,10 +22,10 @@ urlpatterns = [
     path('contactussuccess.html', views.contactussuccess, name='contactussuccess'),
 
     # ── Authentication ────────────────────────────────────────────────────────
-    path('adminlogin.html', views.adminlogin_view, name='adminlogin'),
-    path('studentlogin.html', views.studentlogin_view, name='studentlogin'),
-    path('studentsignup.html', views.studentsignup_view, name='studentsignup'),
-    path('adminsignup.html', views.adminsignup_view, name='adminsignup'),
+    path('adminlogin/', views.adminlogin_view, name='adminlogin'),
+    path('studentlogin/', views.studentlogin_view, name='studentlogin'),
+    path('studentsignup/', views.studentsignup_view, name='studentsignup'),
+    path('adminsignup/', views.adminsignup_view, name='adminsignup'),
 
     # FIX: LogoutView in Django 5.x only accepts POST; next_page sends user to home
     path('logout/', LogoutView.as_view(), name='logout'),
@@ -37,16 +37,16 @@ urlpatterns = [
 
     # ── Admin-only pages ──────────────────────────────────────────────────────
     path('api/addbook/', views.addbook_view, name='addbook'),
-    path('bookadded.html', views.bookadded_view, name='bookadded'),
-    path('viewbook.html', views.viewbook_view, name='viewbook'),
-    path('issuebook.html', views.issuebook_view, name='issuebook'),
-    path('bookissued.html', views.bookissued_view, name='bookissued'),
-    path('viewissuedbook.html', views.viewissuedbook_view, name='viewissuedbook'),
-    path('viewstudent.html', views.viewstudent_view, name='viewstudent'),
+    path('bookadded/', views.bookadded_view, name='bookadded'),
+    path('viewbook/', views.viewbook_view, name='viewbook'),
+    path('issuebook/', views.issuebook_view, name='issuebook'),
+    path('bookissued/', views.bookissued_view, name='bookissued'),
+    path('viewissuedbook/', views.viewissuedbook_view, name='viewissuedbook'),
+    path('viewstudent/', views.viewstudent_view, name='viewstudent'),
 
     # ── Student pages ─────────────────────────────────────────────────────────
-    path('viewissuedbookbystudent.html', views.viewissuedbookbystudent, name='viewissuedbookbystudent'),
-    path('returnbook/<int:id>', views.return_book, name='returnbook'),
+    path('viewissuedbookbystudent/', views.viewissuedbookbystudent, name='viewissuedbookbystudent'),
+    path('returnbook/<int:id>/', views.return_book, name='returnbook'),
 
     # ── JSON API endpoints (consumed by JS fetch() in HTML templates) ─────────
     path('api/books/', views.api_books, name='api_books'),
