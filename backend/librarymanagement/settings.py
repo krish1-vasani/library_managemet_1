@@ -87,7 +87,7 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': _db_engine,
-            'NAME': os.environ.get('DB_NAME', 'librarydb'),
+            'NAME': os.environ.get('DB_NAME', 'libararydb'),
             'USER': os.environ.get('DB_USER', 'admin'),
             'PASSWORD': os.environ.get('DB_PASSWORD', 'Krish7990'),
             'HOST': os.environ.get('DB_HOST', 'libararydb.c720y4e4m8ot.ap-south-1.rds.amazonaws.com'),
