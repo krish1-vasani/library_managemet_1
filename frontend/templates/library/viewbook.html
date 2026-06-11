@@ -175,33 +175,32 @@ fetch('http://library-alb-444938371.ap-south-1.elb.amazonaws.com/api/books.html'
 });
 </script>
 <script>
-
 function deleteBook(bookId) {
+    if (!confirm("Delete this book?")) return;
 
-    if (!confirm("Delete this book?")) {
-        return;
-    }
-
-    fetch(`http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/deletebook/${bookId}/`, {
+    fetch(`http://library-alb-444938371.ap-south-1.elb.amazonaws.com/api/deletebook/${bookId}/`, {
         method: "POST",
         credentials: "include",
         headers: {
-            "Content-Type": "application/json",
             "X-CSRFToken": getCookie("csrftoken")
         }
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("Book deleted successfully");
-            location.reload();
-        } else {
-            alert("Delete failed");
+    .then(async response => {
+        console.log("Status:", response.status);
+
+        const text = await response.text();
+        console.log("Response:", text);
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
         }
+
+        alert("Book deleted successfully");
+        location.reload();
     })
     .catch(error => {
-        console.error("Delete error:", error);
-        alert("Error deleting book");
+        console.error(error);
+        alert(error.message);
     });
 }
 </script>
