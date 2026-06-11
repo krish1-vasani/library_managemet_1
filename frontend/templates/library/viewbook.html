@@ -89,7 +89,7 @@
 <script>
 
 function logout() {
-  fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch(`http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/logout/`, {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }
@@ -100,49 +100,61 @@ function getCookie(name) {
 </script>
 <script>
 
-fetch('library-ALB-444938371.ap-south-1.elb.amazonaws.com/books.html', {credentials:'include'})
-  .then(r => r.json())
-  .then(books => {
-    const container = document.getElementById('bookContainer');
-    if (!books || books.length === 0) {
-      container.innerHTML = '<h1>Have 0 books</h1>';
-      return;
-    }
-    let html = `
-<table class="redTable">
-<thead>
-<tr>
-  <th>Book Name</th>
-  <th>ISBN</th>
-  <th>Author</th>
-  <th>Category</th>
-  <th>Action</th>
-</tr>
-</thead>
-<tbody>
-`;
-    books.forEach(b => {
-  html += `
-    <tr>
-      <td>${b.name}</td>
-      <td>${b.isbn}</td>
-      <td>${b.author}</td>
-      <td>${b.category}</td>
-      <td>
-        <button class="btn btn-danger btn-sm"
-                onclick="deleteBook(${b.id})">
-          Delete
-        </button>
-      </td>
-    </tr>
+fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books/', {
+  credentials: 'include'
+})
+.then(async (response) => {
+  console.log("Status:", response.status);
+
+  const data = await response.json();  // safe JSON parse
+  return data;
+})
+.then(books => {
+  const container = document.getElementById('bookContainer');
+
+  if (!books || books.length === 0) {
+    container.innerHTML = '<h1>Have 0 books</h1>';
+    return;
+  }
+
+  let html = `
+    <table class="redTable">
+    <thead>
+      <tr>
+        <th>Book Name</th>
+        <th>ISBN</th>
+        <th>Author</th>
+        <th>Category</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
   `;
-});
-    html += '</tbody></table>';
-    container.innerHTML = html;
-  })
-  .catch(() => {
-    document.getElementById('bookContainer').innerHTML = '<p class="alert alert-danger">Failed to load books. Please ensure you are logged in.</p>';
+
+  books.forEach(b => {
+    html += `
+      <tr>
+        <td>${b.name}</td>
+        <td>${b.isbn}</td>
+        <td>${b.author}</td>
+        <td>${b.category}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" onclick="deleteBook(${b.id})">
+            Delete
+          </button>
+        </td>
+      </tr>
+    `;
   });
+
+  html += `</tbody></table>`;
+  container.innerHTML = html;
+})
+.catch(error => {
+  console.error("Fetch error:", error);
+  document.getElementById('bookContainer').innerHTML =
+    '<p class="alert alert-danger">Failed to load books. Check API / login / CORS.</p>';
+});
 </script>
 <script>
 
@@ -152,7 +164,7 @@ function deleteBook(bookId) {
         return;
     }
 
-    fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/deletebook/${bookId}/', {
+    fetch(`http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/deletebook/${bookId}/`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -170,7 +182,7 @@ function deleteBook(bookId) {
         }
     })
     .catch(error => {
-        console.error(error);
+        console.error("Delete error:", error);
         alert("Error deleting book");
     });
 }
