@@ -22,10 +22,10 @@ urlpatterns = [
     path('contactussuccess.html', views.contactussuccess, name='contactussuccess'),
 
     # ── Authentication ────────────────────────────────────────────────────────
-    path('adminlogin/', views.adminlogin_view, name='adminlogin'),
-    path('studentlogin/', views.studentlogin_view, name='studentlogin'),
-    path('studentsignup/', views.studentsignup_view, name='studentsignup'),
-    path('adminsignup/', views.adminsignup_view, name='adminsignup'),
+    path('adminlogin.html', views.adminlogin_view, name='adminlogin'),
+    path('studentlogin.html', views.studentlogin_view, name='studentlogin'),
+    path('studentsignup.html', views.studentsignup_view, name='studentsignup'),
+    path('adminsignup.html', views.adminsignup_view, name='adminsignup'),
 
     # FIX: LogoutView in Django 5.x only accepts POST; next_page sends user to home
     path('logout/', LogoutView.as_view(), name='logout'),
