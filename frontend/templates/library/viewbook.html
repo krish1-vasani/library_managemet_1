@@ -103,23 +103,11 @@ fetch('http://library-alb-444938371.ap-south-1.elb.amazonaws.com/api/books.html'
     method: 'GET',
     credentials: 'include'
 })
-.then(async (response) => {
-
-    console.log("Status:", response.status);
-    console.log("URL:", response.url);
-
-    const text = await response.text();
-    console.log("Response:", text);
-
+.then(response => {
     if (!response.ok) {
-        throw new Error("HTTP Error: " + response.status);
+        throw new Error(`HTTP ${response.status}`);
     }
-
-    try {
-        return JSON.parse(text);
-    } catch (e) {
-        throw new Error("Server returned HTML instead of JSON");
-    }
+    return response.json();
 })
 .then(books => {
 
@@ -138,6 +126,7 @@ fetch('http://library-alb-444938371.ap-south-1.elb.amazonaws.com/api/books.html'
                 <th>ISBN</th>
                 <th>Author</th>
                 <th>Category</th>
+                <th>Book ID</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -145,12 +134,14 @@ fetch('http://library-alb-444938371.ap-south-1.elb.amazonaws.com/api/books.html'
     `;
 
     books.forEach(book => {
+        console.log(book.id, book.name);
         html += `
         <tr>
             <td>${book.name}</td>
             <td>${book.isbn}</td>
             <td>${book.author}</td>
             <td>${book.category}</td>
+            <td>${book.id}</td>
             <td>
                 <button class="btn btn-danger btn-sm"
                     onclick="deleteBook(${book.id})">
@@ -161,24 +152,26 @@ fetch('http://library-alb-444938371.ap-south-1.elb.amazonaws.com/api/books.html'
         `;
     });
 
-    html += `</tbody></table>`;
+    html += `
+        </tbody>
+    </table>
+    `;
+
     container.innerHTML = html;
 })
 .catch(error => {
-
     console.error(error);
-
     document.getElementById('bookContainer').innerHTML =
-        `<div class="alert alert-danger">
-            ${error.message}
-        </div>`;
+        `<div class="alert alert-danger">${error.message}</div>`;
 });
-</script>
-<script>
-function deleteBook(bookId) {
-    if (!confirm("Delete this book?")) return;
 
-    fetch(`http://library-alb-444938371.ap-south-1.elb.amazonaws.com/api/deletebook/${bookId}/`, {
+function deleteBook(bookId) {
+
+    const url = `http://library-alb-444938371.ap-south-1.elb.amazonaws.com/api/deletebook/${bookId}/`;
+
+    console.log("DELETE URL:", url);
+
+    fetch(url, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -186,7 +179,9 @@ function deleteBook(bookId) {
         }
     })
     .then(async response => {
+
         console.log("Status:", response.status);
+        console.log("Final URL:", response.url);
 
         const text = await response.text();
         console.log("Response:", text);
@@ -195,7 +190,7 @@ function deleteBook(bookId) {
             throw new Error(`HTTP ${response.status}`);
         }
 
-        alert("Book deleted successfully");
+        alert("Deleted");
         location.reload();
     })
     .catch(error => {

@@ -392,6 +392,7 @@ def api_myissuedbooks(request):
     return JsonResponse({'li1': li1, 'li2': li2})
 
 
+@csrf_exempt
 @login_required(login_url='/adminlogin.html')
 @user_passes_test(is_admin, login_url='/adminlogin.html')
 def api_deletebook(request, pk):

@@ -147,8 +147,6 @@ CORS_ALLOWED_ORIGINS  = os.environ.get(
 
 # FIX: Session cookie settings for production compatibility
 SESSION_COOKIE_SAMESITE = 'None'
-SESSION_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SAMESITE = "None"
-
-SESSION_COOKIE_SECURE = False   # HTTP માટે
+SESSION_COOKIE_SECURE = False   # HTTP
+CSRF_COOKIE_SAMESITE = 'None'
 CSRF_COOKIE_SECURE = False
