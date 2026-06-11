@@ -98,7 +98,7 @@ function getCookie(name) {
 </script>
 <script>
 
-fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/issuedbooks.html', {credentials:'include'})
+fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/issuedbooks.html', {credentials:'include'})
   .then(r => r.json())
   .then(data => {
     const container = document.getElementById('issuedContainer');

@@ -117,9 +117,9 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-LOGIN_REDIRECT_URL = '/afterlogin'
+LOGIN_REDIRECT_URL = '/afterlogin.html'
 # FIX: Tell Django where the login page is so @login_required redirects correctly
-LOGIN_URL = '/adminlogin'
+LOGIN_URL = '/adminlogin.html'
 
 # FIX: Email settings read from env vars (not literal credential strings)
 EMAIL_BACKEND = os.environ.get(
@@ -137,13 +137,18 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_ALL_ORIGINS = True
 CSRF_TRUSTED_ORIGINS = [
     'http://librarymanagement-v4.s3-website.ap-south-1.amazonaws.com',
+    'http://librarymanagement-v4.s3-website.ap-south-1.amazonaws.com',
 ]
 CORS_ALLOWED_ORIGINS  = os.environ.get(
     'CORS_ALLOWED_ORIGINS', 
-    'http://localhost,http://127.0.0.1,http://library-ALB-444938371.ap-south-1.elb.amazonaws.com'
+    'http://localhost,http://127.0.0.1,http://library-ALB-444938371.ap-south-1.elb.amazonaws.com,http://librarymanagement-v4.s3-website.ap-south-1.amazonaws.com'
 ).split(',')
 
 
 # FIX: Session cookie settings for production compatibility
-SESSION_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'None'
 SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = "None"
+
+SESSION_COOKIE_SECURE = False   # HTTP માટે
+CSRF_COOKIE_SECURE = False

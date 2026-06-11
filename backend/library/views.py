@@ -52,12 +52,12 @@ def adminlogin_view(request):
 
     return render(request, 'library/adminlogin.html')
 
-@login_required(login_url='/studentlogin/')
+@login_required(login_url='/studentlogin.html')
 def studentafterlogin_view(request):
     return render(request, 'library/studentafterlogin.html')
 
 
-@login_required(login_url='/adminlogin/')
+@login_required(login_url='/adminlogin.html')
 def adminafterlogin_view(request):
     return render(request, 'library/adminafterlogin.html')
 
@@ -189,8 +189,8 @@ def afterlogin_view(request):
 # ── Admin views ───────────────────────────────────────────────────────────────
 
 @csrf_exempt
-@login_required(login_url='/adminlogin/')
-@user_passes_test(is_admin, login_url='/adminlogin/')
+@login_required(login_url='/adminlogin.html')
+@user_passes_test(is_admin, login_url='/adminlogin.html')
 def addbook_view(request):
     form = forms.BookForm()
     if request.method == 'POST':
@@ -200,20 +200,20 @@ def addbook_view(request):
             return redirect('bookadded')
     return render(request, 'library/addbook.html', {'form': form})
 
-
+@login_required(login_url='/adminlogin.html')
 def bookadded_view(request):
     return render(request, 'library/bookadded.html')
 
-@login_required(login_url='/adminlogin/')
-@user_passes_test(is_admin, login_url='/adminlogin/')
+@login_required(login_url='/adminlogin.html')
+@user_passes_test(is_admin, login_url='/adminlogin.html')
 def viewbook_view(request):
     books = models.Book.objects.all()
     return render(request, 'library/viewbook.html', {'books': books})
 
 
 @csrf_exempt
-@login_required(login_url='/adminlogin/')
-@user_passes_test(is_admin, login_url='/adminlogin/')
+@login_required(login_url='/adminlogin.html')
+@user_passes_test(is_admin, login_url='/adminlogin.html')
 def issuebook_view(request):
     form = forms.IssuedBookForm()
     if request.method == 'POST':
@@ -230,8 +230,8 @@ def issuebook_view(request):
 def bookissued_view(request):
     return render(request, 'library/bookissued.html')
 
-@login_required(login_url='/adminlogin/')
-@user_passes_test(is_admin, login_url='/adminlogin/')
+@login_required(login_url='/adminlogin.html')
+@user_passes_test(is_admin, login_url='/adminlogin.html')
 def viewissuedbook_view(request):
     """
     FIX: Original code tried to pair books[i] with students[i] via nested loop,
@@ -265,8 +265,8 @@ def viewissuedbook_view(request):
     return render(request, 'library/viewissuedbook.html', {'li': li})
 
 
-@login_required(login_url='/adminlogin/')
-@user_passes_test(is_admin, login_url='/adminlogin/')
+@login_required(login_url='/adminlogin.html')
+@user_passes_test(is_admin, login_url='/adminlogin.html')
 def viewstudent_view(request):
     students = models.StudentExtra.objects.all()
     return render(request, 'library/viewstudent.html', {'students': students})
@@ -274,7 +274,7 @@ def viewstudent_view(request):
 
 # ── Student views ─────────────────────────────────────────────────────────────
 
-@login_required(login_url='/studentlogin/')
+@login_required(login_url='/studentlogin.html')
 def viewissuedbookbystudent(request):
     """FIX: Guard against students with no StudentExtra profile."""
     try:
@@ -313,14 +313,14 @@ def return_book(request, pk):
 # FIX: The frontend uses static HTML + JavaScript fetch() to load data.
 #      These endpoints were missing entirely, causing all data tables to show errors.
 
-@login_required(login_url='/adminlogin/')
+@login_required(login_url='/adminlogin.html')
 def api_books(request):
     """Return all books as JSON. Used by viewbook.html and issuebook.html."""
     books = list(models.Book.objects.values('id', 'name', 'isbn', 'author', 'category'))
     return JsonResponse(books, safe=False)
 
 
-@login_required(login_url='/adminlogin/')
+@login_required(login_url='/adminlogin.html')
 def api_students(request):
     """Return all students as JSON. Used by issuebook.html and viewstudent.html."""
     students = models.StudentExtra.objects.select_related('user').all()
@@ -336,8 +336,8 @@ def api_students(request):
     return JsonResponse(data, safe=False)
 
 
-@login_required(login_url='/adminlogin/')
-@user_passes_test(is_admin, login_url='/adminlogin/')
+@login_required(login_url='/adminlogin.html')
+@user_passes_test(is_admin, login_url='/adminlogin.html')
 def api_issuedbooks(request):
     """Return all issued books with joined student/book info. Used by viewissuedbook.html."""
     issuedbooks = models.IssuedBook.objects.all()
@@ -360,7 +360,7 @@ def api_issuedbooks(request):
     return JsonResponse(data, safe=False)
 
 
-@login_required(login_url='/studentlogin/')
+@login_required(login_url='/studentlogin.html')
 def api_myissuedbooks(request):
     """Return the logged-in student's issued books. Used by viewissuedbookbystudent.html."""
     try:
@@ -392,8 +392,8 @@ def api_myissuedbooks(request):
     return JsonResponse({'li1': li1, 'li2': li2})
 
 
-@login_required(login_url='/adminlogin/')
-@user_passes_test(is_admin, login_url='/adminlogin/')
+@login_required(login_url='/adminlogin.html')
+@user_passes_test(is_admin, login_url='/adminlogin.html')
 def api_deletebook(request, pk):
     """Delete a book by primary key. Used by viewbook.html delete button."""
     if request.method in ('POST', 'DELETE'):

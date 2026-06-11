@@ -156,7 +156,7 @@ document.getElementById('issueBookForm').addEventListener('submit', function(e) 
   e.preventDefault();
   const data = new URLSearchParams(new FormData(e.target));
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/issuebook.html', {method:'POST', body:data, credentials:'include'})
+  fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/issuebook.html', {method:'POST', body:data, credentials:'include'})
   .then(r => {
     if(r.ok || r.redirected) window.location.href = 'bookissued.html';
     else {
