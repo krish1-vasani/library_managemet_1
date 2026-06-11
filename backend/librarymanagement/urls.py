@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     # Health check (for AWS ALB / ECS / EC2 monitoring)
-    path('health.html', views.health, name='health'),
+    path('health/', views.health, name='health'),
 
     # Django auth URLs (password reset, etc.)
     path('accounts/', include('django.contrib.auth.urls')),
