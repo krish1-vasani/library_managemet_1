@@ -99,61 +99,79 @@ function getCookie(name) {
 }
 </script>
 <script>
-
-fetch('http://library-ALB-444938371.ap-south-1.elb.amazonaws.com/api/books.html', {
-  credentials: 'include'
+fetch('http://library-alb-444938371.ap-south-1.elb.amazonaws.com/api/books.html', {
+    method: 'GET',
+    credentials: 'include'
 })
 .then(async (response) => {
-  console.log("Status:", response.status);
 
-  const data = await response.json();  // safe JSON parse
-  return data;
+    console.log("Status:", response.status);
+    console.log("URL:", response.url);
+
+    const text = await response.text();
+    console.log("Response:", text);
+
+    if (!response.ok) {
+        throw new Error("HTTP Error: " + response.status);
+    }
+
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        throw new Error("Server returned HTML instead of JSON");
+    }
 })
 .then(books => {
-  const container = document.getElementById('bookContainer');
 
-  if (!books || books.length === 0) {
-    container.innerHTML = '<h1>Have 0 books</h1>';
-    return;
-  }
+    const container = document.getElementById('bookContainer');
 
-  let html = `
+    if (!books || books.length === 0) {
+        container.innerHTML = '<h3>No books found</h3>';
+        return;
+    }
+
+    let html = `
     <table class="redTable">
-    <thead>
-      <tr>
-        <th>Book Name</th>
-        <th>ISBN</th>
-        <th>Author</th>
-        <th>Category</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody>
-  `;
-
-  books.forEach(b => {
-    html += `
-      <tr>
-        <td>${b.name}</td>
-        <td>${b.isbn}</td>
-        <td>${b.author}</td>
-        <td>${b.category}</td>
-        <td>
-          <button class="btn btn-danger btn-sm" onclick="deleteBook(${b.id})">
-            Delete
-          </button>
-        </td>
-      </tr>
+        <thead>
+            <tr>
+                <th>Book Name</th>
+                <th>ISBN</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
     `;
-  });
 
-  html += `</tbody></table>`;
-  container.innerHTML = html;
+    books.forEach(book => {
+        html += `
+        <tr>
+            <td>${book.name}</td>
+            <td>${book.isbn}</td>
+            <td>${book.author}</td>
+            <td>${book.category}</td>
+            <td>
+                <button class="btn btn-danger btn-sm"
+                    onclick="deleteBook(${book.id})">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        `;
+    });
+
+    html += `</tbody></table>`;
+    container.innerHTML = html;
 })
 .catch(error => {
-  console.error("Fetch error:", error);
-  document.getElementById('bookContainer').innerHTML =
-    '<p class="alert alert-danger">Failed to load books. Check API / login / CORS.</p>';
+
+    console.error(error);
+
+    document.getElementById('bookContainer').innerHTML =
+        `<div class="alert alert-danger">
+            ${error.message}
+        </div>`;
 });
 </script>
 <script>
