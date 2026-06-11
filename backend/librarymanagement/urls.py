@@ -49,9 +49,9 @@ urlpatterns = [
     path('returnbook/<int:id>', views.return_book, name='returnbook'),
 
     # ── JSON API endpoints (consumed by JS fetch() in HTML templates) ─────────
-    path('api/books.html', views.api_books, name='api_books'),
-    path('api/students.html', views.api_students, name='api_students'),
-    path('api/issuedbooks.html', views.api_issuedbooks, name='api_issuedbooks'),
-    path('api/myissuedbooks.html', views.api_myissuedbooks, name='api_myissuedbooks'),
+    path('api/books/', views.api_books, name='api_books'),
+    path('api/students/', views.api_students, name='api_students'),
+    path('api/issuedbooks/', views.api_issuedbooks, name='api_issuedbooks'),
+    path('api/myissuedbooks/', views.api_myissuedbooks, name='api_myissuedbooks'),
     path('api/deletebook/<int:pk>/', views.api_deletebook, name='api_deletebook'),
 ]
