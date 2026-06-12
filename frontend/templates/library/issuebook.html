@@ -73,7 +73,7 @@
 <br><br>
 <center><h3 style="margin-bottom:0px;" class="alert alert-success">ISSUE BOOK TO STUDENT !</h3></center>
 <div class="signup-form">
-  <form id="issueBookForm" class="form-horizontal">
+  <form method="post" id="issueBookForm" class="form-horizontal">
     <center><h2>ISSUE BOOK TO STUDENT</h2></center>
     <div class="form-group">
       <label class="control-label col-xs-4">Book (Name and ISBN)</label>
@@ -126,98 +126,46 @@ function getCookie(name) {
 </script>
 <script>
 
-// Load books and students from API
-fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/books/', {
-  method: 'GET',
-  credentials: 'include'
-})
-.then(r => {
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  return r.json();
-})
-.then(books => {
-  const sel = document.getElementById('isbn2');
-  books.forEach(b => {
-    const opt = document.createElement('option');
-    opt.value = b.isbn;
-    opt.textContent = b.name + ' [' + b.isbn + ']';
-    sel.appendChild(opt);
-  });
-})
-.catch(err => console.error('Books load error:', err));
+// Load Books dropdown
+fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/books/', {credentials:'include'})
+  .then(r => r.json())
+  .then(books => {
+    const sel = document.getElementById('isbn2');
+    books.forEach(b => {
+      const opt = document.createElement('option');
+      opt.value = b.isbn;
+      opt.textContent = b.name + ' [' + b.isbn + ']';
+      sel.appendChild(opt);
+    });
+  }).catch(() => {});
 
-// ── Load Students dropdown ───────────────────────────────────
-fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/students/', {
-  method: 'GET',
-  credentials: 'include'
-})
-.then(r => {
-  if (!r.ok) throw new Error('HTTP ' + r.status);
-  return r.json();
-})
-.then(students => {
-  const sel = document.getElementById('enrollment2');
-  students.forEach(s => {
-    const opt = document.createElement('option');
-    opt.value = s.enrollment;
-    opt.textContent = s.name + ' [' + s.enrollment + ']';
-    sel.appendChild(opt);
-  });
-})
-.catch(err => console.error('Students load error:', err));
+fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/students/', {credentials:'include'})
+  .then(r => r.json())
+  .then(students => {
+    const sel = document.getElementById('enrollment2');
+    students.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.enrollment;
+      opt.textContent = s.name + ' [' + s.enrollment + ']';
+      sel.appendChild(opt);
+    });
+  }).catch(() => {});
 
-// ── Issue Book Form Submit ───────────────────────────────────
 document.getElementById('issueBookForm').addEventListener('submit', function(e) {
   e.preventDefault();
-
-  const errorDiv = document.getElementById('issueError');
-  errorDiv.style.display = 'none';
-
-  const isbn       = document.getElementById('isbn2').value;
-  const enrollment = document.getElementById('enrollment2').value;
-
-  if (!isbn || !enrollment) {
-    errorDiv.textContent = 'Please select both a book and a student.';
-    errorDiv.style.display = 'block';
-    return;
-  }
-
-  const submitBtn = e.target.querySelector('button[type="submit"]');
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Issuing...';
-
-  // Send as URL-encoded form data (avoids CORS preflight — same fix as deleteBook)
-  const data = new URLSearchParams();
-  data.append('isbn2', isbn);
-  data.append('enrollment2', enrollment);
+  const data = new URLSearchParams(new FormData(e.target));
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-
-  fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/issuebook/', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'X-CSRFToken': getCookie('csrftoken')
-      // NO Content-Type header — browser sets it automatically for URLSearchParams
-    },
-    body: data
-  })
-  .then(async response => {
-    const text = await response.text();
-    console.log('Issue status:', response.status);
-    console.log('Issue response:', text.substring(0, 300));
-
-    if (response.ok || response.redirected) {
-      window.location.href = 'bookissued.html';
-    } else {
-      throw new Error('Server returned ' + response.status);
+  fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/issuebook/', {method:'POST', body:data, credentials:'include'})
+  .then(r => {
+    if(r.ok || r.redirected) window.location.href = 'bookissued.html';
+    else {
+      document.getElementById('issueError').textContent = 'Failed to issue book. Please try again.';
+      document.getElementById('issueError').style.display = 'block';
     }
   })
-  .catch(err => {
-    console.error('Issue error:', err);
-    errorDiv.textContent = 'Failed to issue book: ' + err.message;
-    errorDiv.style.display = 'block';
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'ISSUE';
+  .catch(() => {
+    document.getElementById('issueError').textContent = 'Network error. Please try again.';
+    document.getElementById('issueError').style.display = 'block';
   });
 });
 </script>
