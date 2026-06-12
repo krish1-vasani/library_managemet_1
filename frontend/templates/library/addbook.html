@@ -45,28 +45,28 @@
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Book</a>
           <div class="dropdown-menu">
-            <a href="addbook.html" class="dropdown-item">Add Book</a>
-            <a href="viewbook.html" class="dropdown-item">View Book</a>
+            <a href="/addbook/" class="dropdown-item">Add Book</a>
+            <a href="/viewbook/" class="dropdown-item">View Book</a>
           </div>
         </div>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Issue Book</a>
           <div class="dropdown-menu">
-            <a href="issuebook.html" class="dropdown-item">Issue New Book</a>
-            <a href="viewissuedbook.html" class="dropdown-item">View Issued Book</a>
+            <a href="/issuebook/" class="dropdown-item">Issue New Book</a>
+            <a href="/viewissuedbook/" class="dropdown-item">View Issued Book</a>
           </div>
         </div>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Student</a>
           <div class="dropdown-menu">
-            <a href="viewstudent.html" class="dropdown-item">View Student</a>
+            <a href="/viewstudent/" class="dropdown-item">View Student</a>
           </div>
         </div>
       </div>
       <div class="navbar-nav">
         <a href="#" class="nav-item nav-link" id="logoutBtn" onclick="logout()" style="cursor:pointer;">LOGOUT</a>
-        <a href="aboutus.html" class="nav-item nav-link">About Us</a>
-        <a href="contactus.html" class="nav-item nav-link">Contact Us</a>
+        <a href="/aboutus/" class="nav-item nav-link">About Us</a>
+        <a href="/contactus/" class="nav-item nav-link">Contact Us</a>
       </div>
     </div>
   </nav>
@@ -107,7 +107,7 @@
       </div>
     </div>
   </form>
-  <div class="text-center">View Available Book In Library <a href="viewbook.html">Click here</a></div>
+  <div class="text-center">View Available Book In Library <a href="/viewbook/">Click here</a></div>
 </div>
 <!-- Footer -->
 <footer style="padding:0;background-color:black;margin:0;">
@@ -124,73 +124,31 @@
 <script>
 function logout() {
   fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
-    .then(() => { localStorage.removeItem('userName'); window.location.href='home.html'; })
-    .catch(() => { localStorage.removeItem('userName'); window.location.href='home.html'; });
+    .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
+    .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }
 function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let cookie of cookies) {
-            cookie = cookie.trim();
-            if (cookie.startsWith(name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
+  let v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+  return v ? v[2] : null;
 }
-
-document.getElementById('addBookForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const errorDiv = document.getElementById('bookError');
-    errorDiv.style.display = 'none';
-
-    const submitBtn = this.querySelector('button[type="submit"]');
-    submitBtn.disabled = true;
-    submitBtn.innerText = 'Adding...';
-
-    const formData = new URLSearchParams();
-    formData.append('name', this.name.value);
-    formData.append('isbn', this.isbn.value);
-    formData.append('author', this.author.value);
-    formData.append('category', this.category.value);
-
-    try {
-        const response = await fetch(
-            'http://library-1443069192.ap-south-1.elb.amazonaws.com/api/addbook/',
-            {
-                method: 'POST',
-                credentials: 'include',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: formData
-            }
-        );
-
-        console.log('Status:', response.status);
-
-        const text = await response.text();
-        console.log('Response:', text);
-
-        if (response.status === 200 || response.status === 201 || response.redirected) {
-            window.location.href = 'bookadded.html';
-            return;
-        }
-
-        throw new Error('HTTP ' + response.status);
-
-    } catch (err) {
-
-        errorDiv.style.display = 'block';
-        errorDiv.innerHTML = err.message;
-
-        submitBtn.disabled = false;
-        submitBtn.innerText = 'ADD';
+</script>
+<script>
+document.getElementById('addBookForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const data = new URLSearchParams(new FormData(e.target));
+  data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
+  fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/addbook/', {method:'POST', body:data, credentials:'include'})
+  .then(r => {
+    if(r.ok || r.redirected) window.location.href = 'bookadded.html';
+    else {
+      document.getElementById('bookError').textContent = 'Failed to add book. Please try again.';
+      document.getElementById('bookError').style.display = 'block';
     }
+  })
+  .catch(() => {
+    document.getElementById('bookError').textContent = 'Network error. Please try again.';
+    document.getElementById('bookError').style.display = 'block';
+  });
 });
 </script>
 </body>
