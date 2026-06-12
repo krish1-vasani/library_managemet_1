@@ -320,7 +320,7 @@ def api_books(request):
     return JsonResponse(books, safe=False)
 
 
-@login_required(login_url='/adminlogin.html')
+#@login_required(login_url='/adminlogin.html')
 def api_students(request):
     """Return all students as JSON. Used by issuebook.html and viewstudent.html."""
     students = models.StudentExtra.objects.select_related('user').all()
@@ -336,7 +336,7 @@ def api_students(request):
     return JsonResponse(data, safe=False)
 
 
-@login_required(login_url='/adminlogin.html')
+#@login_required(login_url='/adminlogin.html')
 @user_passes_test(is_admin, login_url='/adminlogin.html')
 def api_issuedbooks(request):
     """Return all issued books with joined student/book info. Used by viewissuedbook.html."""
