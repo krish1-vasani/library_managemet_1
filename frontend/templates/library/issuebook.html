@@ -193,7 +193,7 @@ document.getElementById('issueBookForm').addEventListener('submit', function(e) 
   data.append('enrollment2', enrollment);
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
 
-  fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/issuebook.html', {
+  fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/issuebook/', {
     method: 'POST',
     credentials: 'include',
     headers: {
