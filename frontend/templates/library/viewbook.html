@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
@@ -40,28 +41,28 @@
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Book</a>
           <div class="dropdown-menu">
-            <a href="addbook.html" class="dropdown-item">Add Book</a>
-            <a href="viewbook.html" class="dropdown-item">View Book</a>
+            <a href="/addbook/" class="dropdown-item">Add Book</a>
+            <a href="/viewbook/" class="dropdown-item">View Book</a>
           </div>
         </div>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Issue Book</a>
           <div class="dropdown-menu">
-            <a href="issuebook.html" class="dropdown-item">Issue New Book</a>
-            <a href="viewissuedbook.html" class="dropdown-item">View Issued Book</a>
+            <a href="/issuebook/" class="dropdown-item">Issue New Book</a>
+            <a href="/viewissuedbook/" class="dropdown-item">View Issued Book</a>
           </div>
         </div>
         <div class="nav-item dropdown">
           <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Student</a>
           <div class="dropdown-menu">
-            <a href="viewstudent.html" class="dropdown-item">View Student</a>
+            <a href="/viewstudent/" class="dropdown-item">View Student</a>
           </div>
         </div>
       </div>
       <div class="navbar-nav">
         <a href="#" class="nav-item nav-link" id="logoutBtn" onclick="logout()" style="cursor:pointer;">LOGOUT</a>
-        <a href="aboutus.html" class="nav-item nav-link">About Us</a>
-        <a href="contactus.html" class="nav-item nav-link">Contact Us</a>
+        <a href="/aboutus/" class="nav-item nav-link">About Us</a>
+        <a href="/contactus/" class="nav-item nav-link">Contact Us</a>
       </div>
     </div>
   </nav>
@@ -71,7 +72,6 @@
 <div id="bookContainer">
   <p style="text-align:center;">Loading books...</p>
 </div>
-
 <br><br><br><br><br><br><br><br><br>
 <!-- Footer -->
 <footer style="padding:0;background-color:black;margin:0;">
@@ -86,9 +86,8 @@
   </div></div></div>
 </footer>
 <script>
-
 function logout() {
-  fetch(`http://library-1443069192.ap-south-1.elb.amazonaws.com/logout/`, {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
+  fetch('/logout/', {method:'POST', headers:{'X-CSRFToken': getCookie('csrftoken')}})
     .then(() => { localStorage.removeItem('userName'); window.location.href='/'; })
     .catch(() => { localStorage.removeItem('userName'); window.location.href='/'; });
 }
@@ -98,108 +97,24 @@ function getCookie(name) {
 }
 </script>
 <script>
-fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/books/', {
-    method: 'GET',
-    credentials: 'include'
-})
-.then(async response => {
-    const text = await response.text();
-    console.log(text);
-    return JSON.parse(text);
-})
-.then(books => {
-
+fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/books/', {credentials:'include'})
+  .then(r => r.json())
+  .then(books => {
     const container = document.getElementById('bookContainer');
-
     if (!books || books.length === 0) {
-        container.innerHTML = '<h3>No books found</h3>';
-        return;
+      container.innerHTML = '<h1>Have 0 books</h1>';
+      return;
     }
-
-    let html = `
-    <table class="redTable">
-        <thead>
-            <tr>
-                <th>Book Name</th>
-                <th>ISBN</th>
-                <th>Author</th>
-                <th>Category</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-    `;
-
-    books.forEach(book => {
-        console.log(book.id, book.name);
-        html += `
-        <tr>
-            <td>${book.name}</td>
-            <td>${book.isbn}</td>
-            <td>${book.author}</td>
-            <td>${book.category}</td>
-        </tr>
-        `;
+    let html = '<table class="redTable"><thead><tr><th>Book Name</th><th>ISBN</th><th>Author</th><th>Category</th></tr></thead><tfoot><tr><td colspan="4"><div class="links"></div></td></tr></tfoot><tbody>';
+    books.forEach(b => {
+      html += `<tr><td>${b.name}</td><td>${b.isbn}</td><td>${b.author}</td><td>${b.category}</td></tr>`;
     });
-
-    html += `
-        </tbody>
-    </table>
-    `;
-
+    html += '</tbody></table>';
     container.innerHTML = html;
-})
-.catch(error => {
-    console.error(error);
-    document.getElementById('bookContainer').innerHTML =
-        `<div class="alert alert-danger">${error.message}</div>`;
-});
-
-// ── Delete Book ─────────────────────────────────────────────
-/*
-function deleteBook(bookId, btn) {
-  if (!confirm('Are you sure you want to delete this book?')) return;
-
-  btn.disabled = true;
-  btn.textContent = 'Deleting...';
-
-  // Get CSRF token from cookie
-  const csrfToken = getCookie('csrftoken');
-  console.log('CSRF Token:', csrfToken); // Check if this is null or a value
-
-  fetch(`http://library-1443069192.ap-south-1.elb.amazonaws.com/api/deletebook/${bookId}/`, {
-    method: 'POST',
-    credentials: 'include',       // sends session cookie
-    headers: {
-      'X-CSRFToken': csrfToken,   // NO Content-Type here — causes preflight CORS issues
-    }
   })
-  .then(async response => {
-    const text = await response.text();
-    console.log('Delete status:', response.status);
-    console.log('Delete response:', text);
-
-    if (!response.ok) {
-      throw new Error(`Server returned ${response.status}: ${text.substring(0, 200)}`);
-    }
-
-    const row = document.getElementById(`book-row-${bookId}`);
-    if (row) row.remove();
-
-    const container = document.getElementById('bookContainer');
-    const msg = document.createElement('div');
-    msg.className = 'alert alert-success';
-    msg.textContent = 'Book deleted successfully.';
-    container.prepend(msg);
-    setTimeout(() => msg.remove(), 3000);
-  })
-  .catch(error => {
-    console.error('Delete error:', error);
-    alert('Delete failed: ' + error.message);
-    btn.disabled = false;
-    btn.textContent = 'Delete';
+  .catch(() => {
+    document.getElementById('bookContainer').innerHTML = '<p class="alert alert-danger">Failed to load books. Please ensure you are logged in.</p>';
   });
-}*/
 </script>
 </body>
 </html>

@@ -74,26 +74,16 @@ WSGI_APPLICATION = 'librarymanagement.wsgi.application'
 # FIX: Default to SQLite for local dev; override via DATABASE_URL env var in production
 # For production MySQL on AWS RDS, set these env vars:
 #   DB_ENGINE, DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
-_db_engine = os.environ.get('DB_ENGINE', 'django.db.backends.sqlite3')
-
-if _db_engine == 'django.db.backends.sqlite3':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'libararydb',
+        'USER': 'admin',
+        'PASSWORD': 'Krish7990',
+        'HOST': 'libararydb.c720y4e4m8ot.ap-south-1.rds.amazonaws.com',
+        'PORT': '3306',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': _db_engine,
-            'NAME': os.environ.get('DB_NAME', 'libararydb'),
-            'USER': os.environ.get('DB_USER', 'admin'),
-            'PASSWORD': os.environ.get('DB_PASSWORD', 'Krish7990'),
-            'HOST': os.environ.get('DB_HOST', 'libararydb.c720y4e4m8ot.ap-south-1.rds.amazonaws.com'),
-            'PORT': os.environ.get('DB_PORT', '3306'),
-        }
-    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
