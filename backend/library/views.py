@@ -337,7 +337,7 @@ def api_students(request):
 
 
 #@login_required(login_url='/adminlogin.html')
-@user_passes_test(is_admin, login_url='/adminlogin.html')
+#@user_passes_test(is_admin, login_url='/adminlogin.html')
 def api_issuedbooks(request):
     """Return all issued books with joined student/book info. Used by viewissuedbook.html."""
     issuedbooks = models.IssuedBook.objects.all()
