@@ -95,7 +95,8 @@ else:
     }
 }
 
-
+python3.11 -m venv venv
+source venv/bin/activate
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
