@@ -137,7 +137,7 @@ document.getElementById('addBookForm').addEventListener('submit', function(e) {
   e.preventDefault();
   const data = new URLSearchParams(new FormData(e.target));
   data.append('csrfmiddlewaretoken', getCookie('csrftoken'));
-  fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/api/addbook/', {method:'POST', body:data, credentials:'include'})
+  fetch('http://library-1443069192.ap-south-1.elb.amazonaws.com/addbook.html', {method:'POST', body:data, credentials:'include'})
   .then(r => {
     if(r.ok || r.redirected) window.location.href = 'bookadded.html';
     else {
